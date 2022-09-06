@@ -1,27 +1,14 @@
-import { PathOrFileDescriptor, readFile, readFileSync } from "fs";
+import { readFilePromise } from "./filePromise";
 
 
-console.log("동기식 api");
-const buffer : Buffer = readFileSync('./package.json');
-console.log(buffer.toString());
-
-readFile('./package.json', (error: Error | null, buffer:Buffer) => {
-    console.log("비동기식 api");
-    console.log(buffer.toString());
-})
-
-const readFilePromise = (filename: PathOrFileDescriptor):Promise<String> =>
-    new Promise<String>((resolve, reject) =>{
-        readFile(filename, (error:Error, buffer:Buffer)=>{
-            if(error)
-                reject(error)
-            else
-                resolve(buffer.toString())
-        })
-    });
-
-(async () =>{
-    const content = await readFilePromise('./package.json');
-    console.log('Promise');
-    console.log(content);
-})
+readFilePromise('./package.json')
+    .then((content:String)=>{
+        console.log(content);
+        return readFilePromise('./tsconfig.json')
+    })
+    .then((content:String)=>{
+        console.log(content);
+        return readFilePromise('.')
+    })
+    .catch((err:Error)=>console.log('error:', err.message))
+    .finally(()=>console.log('끝'));
