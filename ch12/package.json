@@ -6,6 +6,10 @@
   "scripts": {
     "start": "ts-node src"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/great-park/jwt-example-with-node.js.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
